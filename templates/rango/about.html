@@ -1,23 +1,21 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
 
-{% block title_block %}
-    About
-{% endblock %}
+    {% block title_block %}
+        About
+    {% endblock %}
 
-{% block body_block %}
-    <div>
-		<h1>About</h1>
+        {% block body_block %}
+            <h1>About page</h1>
+            <div> this is about page.</div>
+            <strong>{{boldmessage}}</strong><br />
+        
         <div>
-            Number of visits to this page: <strong>{{ visit_count }}</strong>
-		<div>
-			<img src="{% static "images/about.jpg" %}" width="900" height="500" alt="Picture of Rango" /><br />
-			This tutorial has been put together by Calvin. <br />
-			<strong>{{ boldmessage }}</strong><br />
-		</div>
-		<div>
-			<img src="{{ MEDIA_URL }}cat.jpg"/>
-		</div>
-{% endblock %}
-
+            <img src="{% static "images/about.jpg" %}" width="900" height="500" alt="Picture of Rango" /><br />
+        </div>
+        <div>
+          this tutorial has been put together by Calvin <br />
+          <p>visits: {{ visits }}</p>
+        </div> 
+        {% endblock %}
 
