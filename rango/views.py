@@ -44,10 +44,10 @@ def about(request):
         request.session.delete_test_cookie()
     context_dict = {'boldmessage': "The king of cats"}
 
-visitor_cookie_handler(request)
-context_dict['visits'] = request.session['visits']
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
 
-response = render (request,'rango/about.html', context=context_dict)
+    response = render (request,'rango/about.html', context=context_dict)
 # return HttpResponse("Rango says here is the about page!<br/> <a href='/rango/'>Index</a>")
 #return render(request, 'rango/about.html', context=context_dict)
     return response
@@ -101,7 +101,7 @@ def add_category(request):
         else:
             print(form.errors)
     
-return  render(request, 'rango/add_category.html', {'form': form})
+    return  render(request, 'rango/add_category.html', {'form': form})
 
 @login_required
 def add_page(request, category_name_slug):
@@ -110,20 +110,20 @@ def add_page(request, category_name_slug):
     except Category.DoesNotExist:
         category = None
 
-form = PageForm()
-if request.method == 'POST':
-    form = PageForm(request.POST)
-    if form.is_valid():
-        if category:
-            page = form.save(commit=False)
-            page.category = category
+    form = PageForm()
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
                 page.views = 0
                 page.save()
                 return show_category(request, category_name_slug)
-                    else:
-                        print(form.errors)
+            else:
+                print(form.errors)
     
-context_dict = {'form':form, 'category': category}
+    context_dict = {'form':form, 'category': category}
     return render(request, 'rango/add_page.html', context_dict,)
 
 def register(request):
@@ -167,16 +167,16 @@ def register(request):
             
             # Update our variable to indicate that the template
             # registration was successful
-        registered = True
+            registered = True
         else:
             # invalid form or forms- mistakes or something else?
             # print problems to terminal.
             print(user_form.errors, profile_form.errors)
-else:
+    else:
     # not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
-    user_form = UserForm()
-    profile_form = UserProfileForm()
+        user_form = UserForm()
+        profile_form = UserProfileForm()
     
     # Render the template depending on context.
     return render (request,
@@ -219,12 +219,12 @@ def user_login(request):
             print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
-# The request is not a HTTP POST, so display the login form.
-# This scenerio would most likely be a HTTP GET.
-else:
+    # The request is not a HTTP POST, so display the login form.
+    #  This scenerio would most likely be a HTTP GET.
+    else:
     # No contect variables to pass to the template system, hence the
     # blank dictionary object...
-    return render(request, 'rango/login.html', {})
+                return render(request, 'rango/login.html', {})
 
 @login_required
 def restricted(request):
@@ -256,18 +256,18 @@ def visitor_cookie_handler(request):
     last_visit_cookie = get_server_side_cookie(request,
                                                'last_visit',
                                                str(datetime.now()))
-                                               last_visit_time = datetime.strptime(last_visit_cookie[:-7],
-                                                                                   '%Y-%m-%d %H:%M:%S')
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],
+                                            '%Y-%m-%d %H:%M:%S')
                                                
-                                               # If its been more than a day since the last visit...
-                                               if(datetime.now() - last_visit_time).days > 0:
-                                                   visits = visits + 1
-                                                       # Update the last visit cookie now that we have updated the count
-                                                       request.session['last_visit'] = str(datetime.now())
-                                                   else:
+    # If its been more than a day since the last visit...
+    if(datetime.now() - last_visit_time).days > 0:
+        visits = visits + 1
+        # Update the last visit cookie now that we have updated the count
+        request.session['last_visit'] = str(datetime.now())
+    else:
                                                        
-                                                       # Set the last visit cookie
-                                                       request.session['last_visit'] = last_visit_cookie
+        # Set the last visit cookie
+        request.session['last_visit'] = last_visit_cookie
                                                            
-                                                           # Update/set the visits cookie
-                                                           request.session['visits'] = visits
+        # Update/set the visits cookie
+        request.session['visits'] = visits
